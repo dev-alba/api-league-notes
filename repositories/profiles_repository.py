@@ -33,7 +33,7 @@ def create_profile_repo(db: Session, user_id: int, nickname: str, tagline: str) 
     if not user:
         raise UserNotFound
     stmt=select(Profile).where(Profile.nickname==nickname, Profile.tagline==tagline)
-    profile=db.execute(stmt)
+    profile=db.execute(stmt).scalar_one_or_none()
     if profile:
         raise ProfileAlreadyExists
     profile=Profile(
@@ -47,7 +47,6 @@ def create_profile_repo(db: Session, user_id: int, nickname: str, tagline: str) 
         db.refresh(profile)
     except IntegrityError:
         raise ProfileAlreadyExists
-
     return profile
 
 def update_profile_repo(db: Session, user_id: int, old_nickname: str, old_tagline: str, new_nickname: str, new_tagline: str) -> Profile:
@@ -72,6 +71,7 @@ def update_profile_repo(db: Session, user_id: int, old_nickname: str, old_taglin
     except IntegrityError:
         db.rollback()
         raise ProfileAlreadyExists
+    return profile
     
 def delete_profile_repo(db: Session, user_id: int, password: str, nickname: str, tagline: str) -> bool:
     stmt=select(User).where(User.id==user_id)
