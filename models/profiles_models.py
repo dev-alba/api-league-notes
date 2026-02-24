@@ -10,7 +10,7 @@ if TYPE_CHECKING:
 class Profile(Base):
     __tablename__='tb_profiles'
     id: Mapped[int]=mapped_column(primary_key=True)
-    nickname: Mapped[str]=mapped_column(unique=True)
+    nickname: Mapped[str]=mapped_column()
     tagline: Mapped[str]=mapped_column()
     user_id: Mapped[int]=mapped_column(ForeignKey('tb_users.id'))
     notes: Mapped[List['Note']]=relationship(back_populates='profile', cascade='all, delete-orphan')

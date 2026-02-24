@@ -10,8 +10,9 @@ class UserCreate(UserBase):
     class Config:
         from_attributes=True
 
-class UserDelete(UserBase):
+class UserUpdate(UserBase):
     password: str
+    new_password: str
     class Config:
         from_attributes=True
 
@@ -34,7 +35,12 @@ class ProfileCreate(ProfileBase):
     class Config:
         from_attributes=True
 
-class ProfileDelete(BaseModel):
+class ProfileUpdate(ProfileBase):
+    new_nickname: str
+    new_tagline: str
+
+class ProfileDelete(ProfileBase):
+    password: str
     class Config:
         from_attributes=True        
 

@@ -49,19 +49,19 @@ def create_profile_repo(db: Session, user_id: int, nickname: str, tagline: str) 
         raise ProfileAlreadyExists
     return profile
 
-def update_profile_repo(db: Session, user_id: int, old_nickname: str, old_tagline: str, new_nickname: str, new_tagline: str) -> Profile:
+def update_profile_repo(db: Session, user_id: int, nickname: str, tagline: str, new_nickname: str, new_tagline: str) -> Profile:
     stmt=select(User).where(User.id==user_id)
     user=db.execute(stmt).scalar_one_or_none()
     if not user:
         raise UserNotFound
     stmt=select(Profile).where(
-        func.lower(Profile.nickname)==func.lower(old_nickname),
-        func.lower(Profile.tagline)==func.lower(old_tagline),
+        func.lower(Profile.nickname)==func.lower(nickname),
+        func.lower(Profile.tagline)==func.lower(tagline),
         Profile.user_id==user_id
     )
     profile=db.execute(stmt).scalar_one_or_none()
     if not profile:
-        raise ProfileNotFound
+        raise ProfileNotFound 
     profile.nickname=new_nickname
     profile.tagline=new_tagline
     try:
@@ -71,15 +71,14 @@ def update_profile_repo(db: Session, user_id: int, old_nickname: str, old_taglin
     except IntegrityError:
         db.rollback()
         raise ProfileAlreadyExists
-    return profile
     
 def delete_profile_repo(db: Session, user_id: int, password: str, nickname: str, tagline: str) -> bool:
     stmt=select(User).where(User.id==user_id)
     user=db.execute(stmt).scalar_one_or_none()
     if not user:
         raise UserNotFound
-    valid_user=validate_pwd(password, user.password)
-    if not valid_user:
+    validation=validate_pwd(password, user.password)
+    if not validation:
         raise InvalidCredentials
     stmt=select(Profile).where(
         func.lower(Profile.nickname)==func.lower(nickname), 
@@ -91,5 +90,4 @@ def delete_profile_repo(db: Session, user_id: int, password: str, nickname: str,
         raise ProfileNotFound
     db.delete(profile)
     db.commit()
-    return True
-
+    return True    
