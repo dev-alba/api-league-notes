@@ -1,6 +1,6 @@
 from typing import List
 from fastapi import APIRouter, Depends, HTTPException
-from schemas import ProfileCreate, ProfileResponse, ProfileUpdate
+from schemas import ProfileCreate, ProfileResponse, ProfileUpdate, ProfileDelete
 from repositories import profiles_repository
 from database import get_db
 from excepctions import ProfileNotFound, ProfileAlreadyExists, InvalidCredentials, UserNotFound, ProfilesNotFound
@@ -29,7 +29,7 @@ def get_profiles_by_user_id(user_id: int, db=Depends(get_db)):
     except ProfilesNotFound:
         raise HTTPException(status_code=404, detail='Nenhum perfil encontrado no sistema. Por favor verifique os dados e tente novamente.')
     
-@profile_router.post('/create', status_code=201, response_model=ProfileCreate)
+@profile_router.post('/create', status_code=201, response_model=ProfileResponse)
 def create_profile(data: ProfileCreate, db=Depends(get_db)):
     try:
         profile=profiles_repository.create_profile_repo(db, data.user_id, data.nickname, data.tagline)
@@ -51,9 +51,9 @@ def update_profile(data: ProfileUpdate, db=Depends(get_db)):
         raise HTTPException(status_code=409, detail='O nome de usuário/tagline digitado já existe no sistema. Por favor tente novamente com outra combinação.')
     
 @profile_router.delete('/delete/{nickname}/{tagline}', status_code=204)
-def delete_profile(user_id: int, password: str, nickname: str, tagline: str, db=Depends(get_db)):
+def delete_profile(data: ProfileDelete, db=Depends(get_db)):
     try:
-        profiles_repository.delete_profile_repo(db, user_id, password, nickname, tagline)
+        profiles_repository.delete_profile_repo(db, data.user_id, data.password, data.nickname, data.tagline)
         return
     except UserNotFound:
         raise HTTPException(status_code=404, detail='Usuário não encontrado no sistema. Por favor, verifique os dados e tente novamente.')

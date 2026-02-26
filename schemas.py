@@ -10,9 +10,16 @@ class UserCreate(UserBase):
     class Config:
         from_attributes=True
 
-class UserUpdate(UserBase):
+class UserUpdatePassword(BaseModel):
+    email: EmailStr
     password: str
     new_password: str
+    class Config:
+        from_attributes=True
+
+class UserDelete(BaseModel):
+    email: EmailStr
+    password: str
     class Config:
         from_attributes=True
 
@@ -20,6 +27,8 @@ class UserResponse(UserBase):
     id: int
     class Config:
         from_attributes=True
+
+
 
 
 #           PROFILE SCHEMAS
@@ -38,10 +47,18 @@ class ProfileUpdate(ProfileBase):
     new_nickname: str
     new_tagline: str     
 
+class ProfileDelete(ProfileBase):
+    password: str
+    class Config:
+        from_attributes=True
+
 class ProfileResponse(ProfileBase):
     id: int
     class Config:
         from_attributes=True
+
+
+
 
 #           NOTES SCHEMAS
 class NoteBase(BaseModel):
