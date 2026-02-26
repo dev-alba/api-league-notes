@@ -15,3 +15,9 @@ class ProfilesNotFound(Exception):
 
 class ProfileAlreadyExists(Exception):
     pass
+
+class NoteNotFound(Exception):
+    pass
+
+class NotesNotFound(Exception):
+    pass

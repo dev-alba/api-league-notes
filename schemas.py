@@ -31,18 +31,12 @@ class ProfileBase(BaseModel):
         from_attributes=True
 
 class ProfileCreate(ProfileBase):
-    id: int
     class Config:
         from_attributes=True
 
 class ProfileUpdate(ProfileBase):
     new_nickname: str
-    new_tagline: str
-
-class ProfileDelete(ProfileBase):
-    password: str
-    class Config:
-        from_attributes=True        
+    new_tagline: str     
 
 class ProfileResponse(ProfileBase):
     id: int
@@ -51,10 +45,26 @@ class ProfileResponse(ProfileBase):
 
 #           NOTES SCHEMAS
 class NoteBase(BaseModel):
-    id: str
-    created_at: PastDatetime
+    id: int
     user_id: int
-    profile_id: int
     content: str
     class Config:
         from_attributes=True
+
+class NoteCreate(NoteBase):
+    created_at: PastDatetime
+    class Config:
+        from_attributes=True
+
+class NoteUpdate(NoteBase):
+    last_update: PastDatetime
+    profile_id: int
+    class Config:
+        from_attributes=True
+
+class NoteResponse(NoteBase):
+    created_at: PastDatetime
+    profile_id: int
+    class Config:
+        from_attributes=True    
+

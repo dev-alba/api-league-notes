@@ -10,8 +10,9 @@ if TYPE_CHECKING:
 class Note(Base):
     __tablename__='tb_notes'
     id: Mapped[int]=mapped_column(primary_key=True)
-    created_at: Mapped[datetime]=mapped_column(insert_default=func.now())
+    created_at: Mapped[datetime]=mapped_column(server_default=func.now())
     content: Mapped[str]=mapped_column(Text, deferred=True, nullable=False)
+    last_update: Mapped[datetime]=mapped_column(server_default=func.now(), onupdate=func.now())
     profile_id: Mapped[int]=mapped_column(ForeignKey('tb_profiles.id'))
     user_id: Mapped[int]=mapped_column(ForeignKey('tb_users.id'))
     profile: Mapped['Profile']=relationship(back_populates='notes')

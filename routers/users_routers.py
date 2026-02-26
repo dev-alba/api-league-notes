@@ -30,7 +30,7 @@ def get_user(
             raise HTTPException(status_code=404, detail='Usuário não encontrado no sistema. Por favor, verifique os dados e tente novamente.')
     raise HTTPException(status_code=400, detail='Informe nickname ou email para executar a busca.')
 
-@user_router.post('/create}', status_code=201, response_model=UserResponse)
+@user_router.post('/create', status_code=201, response_model=UserResponse)
 def create_user(data: UserCreate, db=Depends(get_db)):
     try:
         user=users_repository.create_user_repo(db, data.nickname, data.password, data.email)

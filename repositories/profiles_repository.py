@@ -1,6 +1,6 @@
 from typing import List
 from sqlalchemy.orm import Session
-from sqlalchemy import select, or_, func
+from sqlalchemy import select, func
 from sqlalchemy.exc import IntegrityError
 from models.profiles_models import Profile
 from models.users_models import User

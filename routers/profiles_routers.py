@@ -1,6 +1,6 @@
 from typing import List
 from fastapi import APIRouter, Depends, HTTPException
-from schemas import ProfileBase, ProfileCreate, ProfileDelete, ProfileResponse, ProfileUpdate
+from schemas import ProfileCreate, ProfileResponse, ProfileUpdate
 from repositories import profiles_repository
 from database import get_db
 from excepctions import ProfileNotFound, ProfileAlreadyExists, InvalidCredentials, UserNotFound, ProfilesNotFound
