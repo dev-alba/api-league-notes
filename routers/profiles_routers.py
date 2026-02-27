@@ -1,9 +1,8 @@
 from typing import List
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends
 from schemas import ProfileCreate, ProfileResponse, ProfileUpdate, ProfileDelete
-from repositories import profiles_repository
+from services import profiles_services
 from database import get_db
-from excepctions import ProfileNotFound, ProfileAlreadyExists, InvalidCredentials, UserNotFound, ProfilesNotFound
 
 profile_router=APIRouter(prefix='/profiles', tags=['Perfis'])
 
@@ -11,53 +10,23 @@ profile_router=APIRouter(prefix='/profiles', tags=['Perfis'])
 def profiles_root():
     return {'message': 'Hello, Profiles'}
 
-@profile_router.get('/get/{nickname}/{tagline}', status_code=200, response_model=ProfileResponse)
-def get_profile_by_nick(nickname: str, tagline: str, db=Depends(get_db)):
-    try:
-        profile=profiles_repository.get_profile_by_nickname_repo(db, nickname, tagline)
-        return profile
-    except ProfileNotFound:
-        raise HTTPException(status_code=404, detail='Perfil não encontrado no sistema. Por favor verifique os dados e tente novamente.')
+@profile_router.get('/{nickname}/{tagline}', status_code=200, response_model=ProfileResponse)
+def get_profile_by_nickname_router(nickname: str, tagline: str, db=Depends(get_db)):
+    return profiles_services.get_profile_by_nickname_service(db, nickname, tagline)
 
-@profile_router.get('/profiles/{user_id}', status_code=200, response_model=List[ProfileResponse])
-def get_profiles_by_user_id(user_id: int, db=Depends(get_db)):
-    try:
-        profiles=profiles_repository.get_profiles_by_user_id_repo(db, user_id)
-        return profiles
-    except UserNotFound:
-        raise HTTPException(status_code=404, detail='Usuário não encontrado no sistema. Por favor, verifique os dados e tente novamente.')
-    except ProfilesNotFound:
-        raise HTTPException(status_code=404, detail='Nenhum perfil encontrado no sistema. Por favor verifique os dados e tente novamente.')
+@profile_router.get('/{user_id}', status_code=200, response_model=List[ProfileResponse])
+def get_profile_list_by_user_id_router(user_id: int, db=Depends(get_db)):
+    return profiles_services.get_profile_list_by_user_id_service(db, user_id)
     
-@profile_router.post('/create', status_code=201, response_model=ProfileResponse)
-def create_profile(data: ProfileCreate, db=Depends(get_db)):
-    try:
-        profile=profiles_repository.create_profile_repo(db, data.user_id, data.nickname, data.tagline)
-        return profile
-    except UserNotFound:
-        raise HTTPException(status_code=404, detail='Usuário não encontrado no sistema. Por favor, verifique os dados e tente novamente.')
+@profile_router.post('/', status_code=201, response_model=ProfileResponse)
+def create_profile_router(data: ProfileCreate, db=Depends(get_db)):
+    return profiles_services.create_profile_service(db, data.nickname, data.tagline, data.user_id)
     #  CRIAR LIGAÇÃO COM API LOL PARA VALIDAR PERFIL
 
-@profile_router.patch('/update', status_code=200, response_model=ProfileResponse)
-def update_profile(data: ProfileUpdate, db=Depends(get_db)):
-    try:
-        profile=profiles_repository.update_profile_repo(db, data.user_id, data.nickname, data.tagline, data.new_nickname, data.new_tagline)
-        return profile
-    except UserNotFound:
-        raise HTTPException(status_code=404, detail='Usuário não encontrado no sistema. Por favor, verifique os dados e tente novamente.')
-    except ProfileNotFound:
-        raise HTTPException(status_code=404, detail='Nenhum perfil encontrado no sistema. Por favor verifique os dados e tente novamente.')
-    except ProfileAlreadyExists:
-        raise HTTPException(status_code=409, detail='O nome de usuário/tagline digitado já existe no sistema. Por favor tente novamente com outra combinação.')
+@profile_router.patch('/', status_code=200, response_model=ProfileResponse)
+def update_profile_router(data: ProfileUpdate, db=Depends(get_db)):
+    return profiles_services.update_profile_service(db, data.user_id, data.nickname, data.tagline, data.new_nickname, data.new_tagline)
     
-@profile_router.delete('/delete/{nickname}/{tagline}', status_code=204)
+@profile_router.delete('/', status_code=204)
 def delete_profile(data: ProfileDelete, db=Depends(get_db)):
-    try:
-        profiles_repository.delete_profile_repo(db, data.user_id, data.password, data.nickname, data.tagline)
-        return
-    except UserNotFound:
-        raise HTTPException(status_code=404, detail='Usuário não encontrado no sistema. Por favor, verifique os dados e tente novamente.')
-    except ProfileNotFound:
-        raise HTTPException(status_code=404, detail='Nenhum perfil encontrado no sistema. Por favor verifique os dados e tente novamente.')
-    except InvalidCredentials:
-        raise HTTPException(status_code=403, detail='Credenciais inválidas. Por favor, verifique os dados e tente novamente.')     
+    return profiles_services.delete_profile_service(db, data.user_id, data.nickname, data.tagline, data.password)

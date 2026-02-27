@@ -21,6 +21,6 @@ def create_user_router(data: UserCreate, db=Depends(get_db)):
 def update_user_password_router(data: UserUpdatePassword, db=Depends(get_db)):
     return users_services.update_user_service(db, data.email, data.password, data.new_password)
     
-@user_router.delete('/{email}', status_code=204)
+@user_router.delete('/', status_code=204)
 def delete_user_router(data: UserDelete, db=Depends(get_db)):
     return users_services.delete_user_service(db, data.email, data.password)

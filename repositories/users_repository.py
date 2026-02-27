@@ -4,6 +4,10 @@ from sqlalchemy import select, or_, func
 from models.users_models import User
 from security import hash_pwd
 
+def get_user_by_user_id_repo(db: Session, user_id: int):
+    stmt=select(User).where(User.id==user_id)
+    return db.execute(stmt).scalar_one_or_none()
+
 def get_user_by_email_repo(db: Session, email: str):
     stmt=select(User).where(
         func.lower(User.email)==func.lower(email)

@@ -2,6 +2,8 @@ class InvalidCredentials(Exception):
     def __init__(self, message='Credenciais inválidas. Por favor, verifique os dados e tente novamente.'):
         self.message=message
 
+#       USERS
+
 class UserNotFound(Exception):
     def __init__(self, message='Usuário não encontrado no sistema. Por favor, verifique os dados e tente novamente.'):
         self.message=message
@@ -11,18 +13,28 @@ class UserAlreadyExists(Exception):
         self.message=message
 
 class UserCannotBeDeleted(Exception):
-    def __init__(self, message='O usuário não pode ser removido no momento. Por favor, tente novamente mais tarde'):
+    def __init__(self, message='O usuário não pode ser removido no momento. Por favor, tente novamente mais tarde.'):
         self.message=message
 
+#       PROFILES
 
 class ProfileNotFound(Exception):
-    pass
+    def __init__(self, message='Perfil não encontrado no sistema. Por favor verifique os dados e tente novamente.'):
+        self.message=message
 
 class ProfilesNotFound(Exception):
-    pass
+    def __init__(self, message='Nenhum perfil encontrado no sistema. Por favor verifique os dados e tente novamente.'):
+        self.message=message
 
 class ProfileAlreadyExists(Exception):
-    pass
+    def __init__(self, message='O nome de usuário/tagline digitado já existe no sistema. Por favor tente novamente com outra combinação.'):
+        self.message=message
+
+class ProfileCannotBeDeleted(Exception):
+    def __init__(self, message='O perfil não pode ser removido no momento. Por favor, tente novamente mais tarde.'):
+        self.message=message
+
+#       NOTES
 
 class NoteNotFound(Exception):
     pass
