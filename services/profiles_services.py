@@ -22,7 +22,7 @@ def get_profile_list_by_user_id_service(db, user_id) -> List[Profile]:
     return profiles
 
 def create_profile_service(db, nickname, tagline, user_id) -> Profile:
-    user=users_services.get_user_by_user_id_service(db, user_id)
+    users_services.get_user_by_user_id_service(db, user_id)
     profile=Profile(
         user_id=user_id,
         nickname=nickname,
@@ -33,7 +33,7 @@ def create_profile_service(db, nickname, tagline, user_id) -> Profile:
         raise ProfileAlreadyExists
     
 def update_profile_service(db, user_id, nickname, tagline, new_nickname, new_tagline) -> Profile:
-    user=users_services.get_user_by_user_id_service(db, user_id)
+    users_services.get_user_by_user_id_service(db, user_id)
     profile=profiles_repository.auth_profile_user_id_repo(db, user_id, nickname, tagline)
     if not profile:
         raise ProfileNotFound
@@ -55,3 +55,9 @@ def delete_profile_service(db, user_id, nickname, tagline, password) -> bool:
         return profiles_repository.delete_profile_repo(db, profile)
     except IntegrityError:
         raise ProfileCannotBeDeleted
+
+def auth_profile_service(db, user_id, nickname, tagline) -> Profile:
+    profile=profiles_repository.auth_profile_user_id_repo(db, user_id, nickname, tagline)
+    if not profile:
+        raise ProfileNotFound
+    return profile

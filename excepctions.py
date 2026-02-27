@@ -37,8 +37,9 @@ class ProfileCannotBeDeleted(Exception):
 #       NOTES
 
 class NoteNotFound(Exception):
-    pass
+    def __init__(self, message='Nenhuma nota com esse ID encontrada no sistema. Por favor verifique se o perfil informado possui essa nota e tente novamente.'):
+        self.message=message
 
 class NotesNotFound(Exception):
-    pass
-
+    def __init__(self, message='Nenhuma nota encontrada para o perfil. Por favor verifique se o perfil informado possui alguma nota e tente novamente.'):
+        self.message=message

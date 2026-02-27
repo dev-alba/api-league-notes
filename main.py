@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
-from excepctions import InvalidCredentials, UserNotFound, UserAlreadyExists, UserCannotBeDeleted, ProfileNotFound, ProfilesNotFound, ProfileAlreadyExists, ProfileCannotBeDeleted
+from excepctions import InvalidCredentials, UserNotFound, UserAlreadyExists, UserCannotBeDeleted, ProfileNotFound, ProfilesNotFound, ProfileAlreadyExists, ProfileCannotBeDeleted, NoteNotFound, NotesNotFound
 from routers import notes_routers, users_routers, profiles_routers, champions_routers
 from database import Base, engine
 from models import champions_models, users_models, profiles_models, notes_models
@@ -54,6 +54,17 @@ async def profile_already_exists_handler(request, exc):
 async def profile_cannot_be_deleted_handler(request, exc):
     return JSONResponse(
         status_code=409, content={'detail': exc.message})
+
+#       NOTES HANDLERS
+@app.exception_handler(NoteNotFound)
+async def note_not_found_handler(request, exc):
+    return JSONResponse(
+        status_code=404, content={'detail': exc.message})
+
+@app.exception_handler(NotesNotFound)
+async def note_not_found_handler(request, exc):
+    return JSONResponse(
+        status_code=404, content={'detail': exc.message})
 
 @app.get('/')
 def root():

@@ -74,13 +74,13 @@ class NoteCreate(NoteBase):
         from_attributes=True
 
 class NoteUpdate(NoteBase):
-    last_update: PastDatetime
     profile_id: int
     class Config:
         from_attributes=True
 
 class NoteResponse(NoteBase):
     created_at: PastDatetime
+    last_update: PastDatetime
     profile_id: int
     class Config:
         from_attributes=True    
