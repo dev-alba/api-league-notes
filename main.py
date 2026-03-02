@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
-from excepctions import LeagueNotesException
+from exceptions import LeagueNotesException
 from routers import notes_routers, users_routers, profiles_routers, champions_routers, auth_routers
 from database import Base, engine
 from models import champions_models, users_models, profiles_models, notes_models

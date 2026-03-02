@@ -3,7 +3,7 @@ from sqlalchemy.exc import IntegrityError
 from models.profiles_models import Profile
 from repositories import profiles_repository, users_repository
 from services import users_services
-from excepctions import ProfileNotFound, ProfilesNotFound, ProfileAlreadyExists, ProfileCannotBeDeleted, UserNotFound, InvalidCredentials
+from exceptions import ProfileNotFound, ProfilesNotFound, ProfileAlreadyExists, ProfileCannotBeDeleted, UserNotFound, InvalidCredentials
 from security.security import validate_pwd
 
 def get_profile_by_nickname_service(db, nickname, tagline) -> Profile:

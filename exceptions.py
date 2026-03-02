@@ -6,7 +6,7 @@ class LeagueNotesException(Exception):
 #       SECURITY
 class InvalidCredentials(LeagueNotesException):
     def __init__(self, message='Credenciais inválidas. Por favor, verifique os dados e tente novamente.'):
-        super().__init__(message, status_code=403)
+        super().__init__(message, status_code=401)
 
 class InvalidToken(LeagueNotesException):
     def __init__(self, message='Token inválido.'):

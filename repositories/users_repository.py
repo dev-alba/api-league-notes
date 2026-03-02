@@ -30,8 +30,7 @@ def create_user_repo(db: Session, user: User) -> User:
         db.rollback()
         raise
 
-def update_user_password_repo(db: Session, user: User, new_password: str) -> User:
-    user.password=hash_pwd(new_password)
+def update_user_password_repo(db: Session, user: User) -> User:
     try:
         db.commit()
         db.refresh(user)

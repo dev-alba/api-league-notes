@@ -3,7 +3,7 @@ from fastapi.security import OAuth2PasswordBearer
 from datetime import datetime, timezone, timedelta
 from services import users_services
 from dotenv import load_dotenv
-from excepctions import InvalidToken, ExpiredInvalidToken
+from exceptions import InvalidToken, ExpiredInvalidToken
 from database import get_db
 import jwt
 import os
