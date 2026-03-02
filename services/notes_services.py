@@ -33,4 +33,3 @@ def delete_note_service(db, user_id, nickname, tagline, note_id):
     if not note:
         raise NoteNotFound
     return notes_repository.delete_note_repo(db, note)
-

@@ -1,7 +1,7 @@
 from sqlalchemy.exc import IntegrityError
 from repositories import users_repository
 from excepctions import InvalidCredentials, UserNotFound, UserAlreadyExists, UserCannotBeDeleted
-from security import validate_pwd, hash_pwd
+from security.security import validate_pwd, hash_pwd
 from models.users_models import User
 
 def create_user_service(db, nickname, email, password) -> User:
@@ -27,23 +27,31 @@ def get_user_by_user_id_service(db, user_id) -> User:
 def get_user_by_email_service(db, email) -> User:
     user=users_repository.get_user_by_email_repo(db, email)
     if not user:
-        raise UserNotFound
+        raise InvalidCredentials
     return user
 
-def auth_user_credentials_service(db, email, password) -> User:
-    user=get_user_by_email_service(db, email)
+def user_auth_credentials_service(db, identifier, password) -> User:
+    user=users_repository.get_user_by_nick_or_email_repo(db, identifier)
     if not validate_pwd(password, user.password):
         raise InvalidCredentials
     return user
 
-def update_user_service(db, email, password, new_password) -> User:
-    user=auth_user_credentials_service(db, email, password)
+def user_auth_user_id(db, user_id, password) -> User:
+    user=users_repository.get_user_by_user_id_repo(db, user_id)
+    if not user:
+        validate_pwd(password, user.password)
+        raise UserNotFound
+    if not validate_pwd(password, user.password):
+        raise InvalidCredentials
+    return user
+
+def update_user_service(db, user_id, password, new_password) -> User:
+    user=user_auth_user_id(db, user_id, password)
     return users_repository.update_user_password_repo(db, user, new_password)
 
-def delete_user_service(db, email, password) -> bool:
-    user=auth_user_credentials_service(db, email, password)
+def delete_user_service(db, user_id, password) -> bool:
+    user=user_auth_user_id(db, user_id, password)
     try:
         return users_repository.delete_user_repo(db, user)
     except IntegrityError:
         raise UserCannotBeDeleted
-    

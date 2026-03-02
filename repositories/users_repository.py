@@ -1,8 +1,8 @@
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
-from sqlalchemy import select, func
+from sqlalchemy import select, func, or_
 from models.users_models import User
-from security import hash_pwd
+from security.security import hash_pwd
 
 def get_user_by_user_id_repo(db: Session, user_id: int) -> User:
     stmt=select(User).where(User.id==user_id)
@@ -10,7 +10,13 @@ def get_user_by_user_id_repo(db: Session, user_id: int) -> User:
 
 def get_user_by_email_repo(db: Session, email: str) -> User:
     stmt=select(User).where(
-        func.lower(User.email)==func.lower(email)
+        func.lower(User.email)==func.lower(email))
+    return db.execute(stmt).scalar_one_or_none()
+
+def get_user_by_nick_or_email_repo(db: Session, identifier: str) -> User:
+    stmt=select(User).where(
+        or_(func.lower(User.email)==func.lower(identifier), 
+            func.lower(User.nickname)==func.lower(identifier))
         )
     return db.execute(stmt).scalar_one_or_none()
 

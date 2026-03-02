@@ -33,7 +33,6 @@ class UserResponse(UserBase):
 
 #           PROFILE SCHEMAS
 class ProfileBase(BaseModel):
-    user_id: int
     nickname: str
     tagline: str
     class Config:
@@ -54,6 +53,7 @@ class ProfileDelete(ProfileBase):
 
 class ProfileResponse(ProfileBase):
     id: int
+    user_id: int
     class Config:
         from_attributes=True
 
@@ -85,3 +85,13 @@ class NoteResponse(NoteBase):
     class Config:
         from_attributes=True    
 
+
+#           AUTH SCHEMAS
+class LoginBase(BaseModel):
+    pass
+
+class LoginSchema(LoginBase):
+    email: EmailStr
+    password: str
+    class Config:
+        from_attributes=True   
