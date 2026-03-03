@@ -1,3 +1,4 @@
+#       AUTH
 class LeagueNotesException(Exception):
     def __init__(self, message: str, status_code: int):
         self.message = message
@@ -54,3 +55,16 @@ class NoteNotFound(LeagueNotesException):
 class NotesNotFound(LeagueNotesException):
     def __init__(self, message='Nenhuma nota encontrada para o perfil. Por favor verifique se o perfil informado possui alguma nota e tente novamente.'):
         super().__init__(message, status_code=404)
+
+#       CHAMPIONS
+class ChampNotFound(LeagueNotesException):
+    def __init__(self, message='Campeão não localizado no sistema.'):
+        super().__init__(message, status_code=404)
+
+class ChampAlreadyExists(LeagueNotesException):
+    def __init__(self, message='Campeão já existente no sistema.'):
+        super().__init__(message, status_code=409)
+
+class ChampionsNotFound(LeagueNotesException):
+    def __init__(self, message='Nenhum campeão localizado no sistema.'):
+        super().__init__(message, status_code=404)        

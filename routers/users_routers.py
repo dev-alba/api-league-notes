@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from services import users_services
-from database import get_db
-from schemas import UserResponse, UserUpdatePassword, UserCreate
+from core.database import get_db
+from schemas.user_schemas import UserResponse, UserUpdatePassword, UserCreate
 from security.jwt_handler import get_current_user
 
 user_router=APIRouter(prefix='/users', tags=['Usuários'])

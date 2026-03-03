@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import TYPE_CHECKING
 from sqlalchemy import ForeignKey, func, Text
 from sqlalchemy.orm import relationship, mapped_column, Mapped
-from database import Base
+from core.database import Base
 
 if TYPE_CHECKING:
     from .profiles_models import Profile

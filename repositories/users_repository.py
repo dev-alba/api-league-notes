@@ -2,7 +2,6 @@ from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy import select, func, or_
 from models.users_models import User
-from security.security import hash_pwd
 
 def get_user_by_user_id_repo(db: Session, user_id: int) -> User:
     stmt=select(User).where(User.id==user_id)

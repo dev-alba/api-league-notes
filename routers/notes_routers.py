@@ -1,7 +1,7 @@
 from typing import List
 from fastapi import APIRouter, Depends
-from schemas import NoteResponse
-from database import get_db
+from schemas.notes_schemas import NoteResponse
+from core.database import get_db
 from services import notes_services
 from security.jwt_handler import get_current_user
 

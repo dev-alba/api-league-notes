@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends
 from fastapi.security import OAuth2PasswordRequestForm
-from database import get_db
+from core.database import get_db
 from services import auth_service
 
 auth_router=APIRouter(prefix='/login', tags=['Login'])

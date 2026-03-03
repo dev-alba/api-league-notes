@@ -1,6 +1,6 @@
 from sqlalchemy.exc import IntegrityError
 from repositories import users_repository
-from exceptions import InvalidCredentials, UserNotFound, UserAlreadyExists, UserCannotBeDeleted
+from core.exceptions import InvalidCredentials, UserNotFound, UserAlreadyExists, UserCannotBeDeleted
 from security.security import validate_pwd, hash_pwd
 from models.users_models import User
 

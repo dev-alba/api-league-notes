@@ -1,7 +1,7 @@
 from typing import List, TYPE_CHECKING
 from sqlalchemy import ForeignKey, UniqueConstraint
 from sqlalchemy.orm import relationship, mapped_column, Mapped
-from database import Base
+from core.database import Base
 
 if TYPE_CHECKING:
     from .users_models import User

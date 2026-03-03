@@ -1,8 +1,8 @@
 from typing import List
 from fastapi import APIRouter, Depends
-from schemas import ProfileResponse, ProfileDelete
+from schemas.profile_schemas import ProfileResponse, ProfileDelete
 from services import profiles_services
-from database import get_db
+from core.database import get_db
 from security.jwt_handler import get_current_user
 
 profile_router=APIRouter(prefix='/profiles', tags=['Perfis'])

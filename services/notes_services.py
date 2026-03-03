@@ -1,6 +1,6 @@
 from repositories import profiles_repository, notes_repository
 from services import profiles_services
-from exceptions import ProfileNotFound, NotesNotFound, NoteNotFound
+from core.exceptions import ProfileNotFound, NotesNotFound, NoteNotFound
 from models.notes_models import Note
 
 def get_notes_by_profile_service(db, user_id, nickname, tagline):

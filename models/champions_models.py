@@ -1,8 +1,9 @@
 from sqlalchemy.orm import mapped_column, Mapped
-from database import Base
+from core.database import Base
 
-class Champions(Base):
+class Champion(Base):
     __tablename__='tb_champions'
-    champ_id: Mapped[int]=mapped_column(primary_key=True)
-    champ_name: Mapped[str]=mapped_column(unique=True)
-    champ_title: Mapped[str]=mapped_column(unique=True)
+    id: Mapped[int]=mapped_column(primary_key=True)
+    name: Mapped[str]=mapped_column(unique=True)
+    title: Mapped[str]=mapped_column(unique=True)
+    image_full: Mapped[str]=mapped_column(unique=True)
