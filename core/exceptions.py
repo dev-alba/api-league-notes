@@ -68,3 +68,12 @@ class ChampAlreadyExists(LeagueNotesException):
 class ChampionsNotFound(LeagueNotesException):
     def __init__(self, message='Nenhum campeão localizado no sistema.'):
         super().__init__(message, status_code=404)        
+
+#       MATCHUPS
+class MatchupNotFound(LeagueNotesException):
+    def __init__(self, message='Matchup não localizada no sistema.'):
+        super().__init__(message, status_code=404)
+
+class MatchupAlreadyExists(LeagueNotesException):
+    def __init__(self, message='Matchup já existente no sistema.'):
+        super().__init__(message, status_code=409)

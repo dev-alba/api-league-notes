@@ -6,13 +6,16 @@ from core.database import Base
 
 if TYPE_CHECKING:
     from .profiles_models import Profile
+    from .matchups_models import Matchup
 
 class Note(Base):
     __tablename__='tb_notes'
     id: Mapped[int]=mapped_column(primary_key=True)
     created_at: Mapped[datetime]=mapped_column(server_default=func.now())
+    matchup_id: Mapped[int]=mapped_column(ForeignKey('tb_matchups.id'))
     content: Mapped[str]=mapped_column(Text, deferred=True, nullable=False)
     last_update: Mapped[datetime]=mapped_column(server_default=func.now(), onupdate=func.now())
     profile_id: Mapped[int]=mapped_column(ForeignKey('tb_profiles.id'))
     user_id: Mapped[int]=mapped_column(ForeignKey('tb_users.id'))
     profile: Mapped['Profile']=relationship(back_populates='notes')
+    matchup: Mapped['Matchup']=relationship(back_populates='notes')
