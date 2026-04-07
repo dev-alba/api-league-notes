@@ -15,11 +15,22 @@ def get_matchup_by_names(db, player_champion_name, enemy_champion_name):
         raise ChampNotFound
     matchup=matchups_repository.get_matchup_by_champions_ids(db, player_champion.id, enemy_champion.id)
     if not matchup:
-        matchup=create_matchup_service(db, player_champion.id, enemy_champion.id)
-        return matchup
+        matchup=auto_create_matchup_service(db, player_champion.id, enemy_champion.id)
     return matchup
 
-def create_matchup_service(db, player_champion_id, enemy_champion_id):
+def create_matchup_service(db, player_champion_name, enemy_champion_name):
+    player_champion = champions_repository.get_champion_by_name_repo(db, player_champion_name)
+    enemy_champion = champions_repository.get_champion_by_name_repo(db, enemy_champion_name)
+    if not player_champion or not enemy_champion:
+        raise ChampNotFound
+
+    matchup_exists = matchups_repository.get_matchup_by_champions_ids(db, player_champion.id, enemy_champion.id)
+    if matchup_exists:
+        raise MatchupAlreadyExists
+
+    return auto_create_matchup_service(db, player_champion.id, enemy_champion.id)
+
+def auto_create_matchup_service(db, player_champion_id, enemy_champion_id):
     matchup=Matchup(
         player_champion_id=player_champion_id,
         enemy_champion_id=enemy_champion_id
