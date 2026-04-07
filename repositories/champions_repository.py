@@ -10,6 +10,7 @@ def get_champion_by_id_repo(db: Session, champion: Champion) -> Champion:
 def get_champion_by_name_repo(db: Session, champion_name: str) -> Champion:
     stmt=select(Champion).where(func.lower(Champion.name)==func.lower(champion_name))
     return db.execute(stmt).scalar_one_or_none()
+
 def get_all_champions_repo(db: Session) -> List[Champion]:
     stmt=select(Champion)
     return db.execute(stmt).scalars().all()

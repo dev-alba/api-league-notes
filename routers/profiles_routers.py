@@ -1,6 +1,6 @@
 from typing import List
 from fastapi import APIRouter, Depends
-from schemas.profile_schemas import ProfileResponse, ProfileDelete
+from schemas.profile_schemas import ProfileResponse, ProfileDelete, ProfileUpdate
 from services import profiles_services
 from core.database import get_db
 from security.jwt_handler import get_current_user
@@ -25,8 +25,8 @@ def create_profile_router(nickname: str, tagline: str, current_user=Depends(get_
     #  CRIAR LIGAÇÃO COM API LOL PARA VALIDAR PERFIL
 
 @profile_router.patch('/', status_code=200, response_model=ProfileResponse)
-def update_profile_router(nickname: str, tagline: str, new_nickname: str, new_tagline: str, current_user=Depends(get_current_user), db=Depends(get_db)):
-    return profiles_services.update_profile_service(db, current_user.id, nickname, tagline, new_nickname, new_tagline)
+def update_profile_router(nickname: str, tagline: str, data: ProfileUpdate, current_user=Depends(get_current_user), db=Depends(get_db)):
+    return profiles_services.update_profile_service(db, current_user.id, nickname, tagline, data.new_nickname, data.new_tagline)
     
 @profile_router.delete('/', status_code=204)
 def delete_profile(data: ProfileDelete, current_user=Depends(get_current_user), db=Depends(get_db)):

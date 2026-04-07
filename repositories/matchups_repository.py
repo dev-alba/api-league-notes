@@ -7,8 +7,8 @@ def get_matchup_repo(db: Session, matchup_id: int) -> Matchup:
     stmt=select(Matchup).where(Matchup.id==matchup_id)
     return db.execute(stmt).scalar_one_or_none()
 
-def get_matchup_by_champions(db: Session, player_champ: int, enemy_champ: int) -> Matchup:
-    stmt=select(Matchup).where(Matchup.player_champion==player_champ, Matchup.enemy_champion==enemy_champ)
+def get_matchup_by_champions_ids(db: Session, player_champion_id: int, enemy_champion_id: int) -> Matchup:
+    stmt=select(Matchup).where(Matchup.player_champion_id==player_champion_id, Matchup.enemy_champion_id==enemy_champion_id)
     return db.execute(stmt).scalar_one_or_none()
 
 def create_matchup_repo(db: Session, matchup: Matchup) -> Matchup:

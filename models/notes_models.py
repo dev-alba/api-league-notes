@@ -16,6 +16,5 @@ class Note(Base):
     content: Mapped[str]=mapped_column(Text, deferred=True, nullable=False)
     last_update: Mapped[datetime]=mapped_column(server_default=func.now(), onupdate=func.now())
     profile_id: Mapped[int]=mapped_column(ForeignKey('tb_profiles.id'))
-    user_id: Mapped[int]=mapped_column(ForeignKey('tb_users.id'))
     profile: Mapped['Profile']=relationship(back_populates='notes')
     matchup: Mapped['Matchup']=relationship(back_populates='notes')

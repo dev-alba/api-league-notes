@@ -17,6 +17,10 @@ class ExpiredInvalidToken(LeagueNotesException):
     def __init__(self, message='Token inválido ou expirado.'):
         super().__init__(message, status_code=401)
 
+class Unauthorized(LeagueNotesException):
+    def __init__(self, message='Requisição não autorizada.'):
+        super().__init__(message, status_code=401)
+
 #       USERS
 class UserNotFound(LeagueNotesException):
     def __init__(self, message='Usuário não encontrado no sistema. Por favor, verifique os dados e tente novamente.'):
