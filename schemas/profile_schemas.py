@@ -10,9 +10,9 @@ class ProfileCreate(ProfileBase):
     class Config:
         from_attributes=True
 
-class ProfileUpdate(ProfileBase):
+class ProfileUpdate(BaseModel):
     new_nickname: str
-    new_tagline: str     
+    new_tagline: str
 
 class ProfileDelete(ProfileBase):
     password: str

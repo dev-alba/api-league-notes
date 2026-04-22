@@ -22,7 +22,6 @@ def get_profile_list_by_user_id_router(current_user=Depends(get_current_user), d
 @profile_router.post('/', status_code=201, response_model=ProfileResponse)
 def create_profile_router(nickname: str, tagline: str, current_user=Depends(get_current_user), db=Depends(get_db)):
     return profiles_services.create_profile_service(db, nickname, tagline, current_user.id)
-    #  CRIAR LIGAÇÃO COM API LOL PARA VALIDAR PERFIL
 
 @profile_router.patch('/', status_code=200, response_model=ProfileResponse)
 def update_profile_router(nickname: str, tagline: str, data: ProfileUpdate, current_user=Depends(get_current_user), db=Depends(get_db)):

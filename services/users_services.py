@@ -32,6 +32,8 @@ def get_user_by_email_service(db, email) -> User:
 
 def user_auth_credentials_service(db, identifier, password) -> User:
     user=users_repository.get_user_by_nick_or_email_repo(db, identifier)
+    if not user:
+        raise UserNotFound
     if not validate_pwd(password, user.password):
         raise InvalidCredentials
     return user
@@ -48,7 +50,7 @@ def user_auth_user_id(db, user_id, password) -> User:
 def update_user_service(db, user_id, password, new_password) -> User:
     user=user_auth_user_id(db, user_id, password)
     user.password=hash_pwd(new_password)
-    return users_repository.update_user_password_repo(db, user, new_password)
+    return users_repository.update_user_password_repo(db, user)
 
 def delete_user_service(db, user_id, password) -> bool:
     user=user_auth_user_id(db, user_id, password)

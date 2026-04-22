@@ -10,7 +10,6 @@ class UserCreate(UserBase):
         from_attributes=True
 
 class UserUpdatePassword(BaseModel):
-    email: EmailStr
     password: str
     new_password: str
     class Config:

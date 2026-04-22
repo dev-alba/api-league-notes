@@ -3,7 +3,7 @@ from fastapi.security import OAuth2PasswordBearer
 from datetime import datetime, timezone, timedelta
 from services import users_services
 from dotenv import load_dotenv
-from core.exceptions import InvalidToken, ExpiredInvalidToken
+from core.exceptions import InvalidToken, ExpiredInvalidToken, UserNotFound, InvalidToken
 from core.database import get_db
 import jwt
 import os
@@ -34,4 +34,7 @@ def verify_token(token: str):
     
 def get_current_user(token: str=Depends(oauth2_scheme), db=Depends(get_db)):
     user_id=verify_token(token)
-    return users_services.get_user_by_user_id_service(db, int(user_id))
+    try:
+        return users_services.get_user_by_user_id_service(db, int(user_id))
+    except UserNotFound:
+        raise InvalidToken
