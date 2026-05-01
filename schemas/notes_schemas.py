@@ -1,3 +1,4 @@
+from datetime import datetime
 from pydantic import BaseModel, PastDatetime
 
 class NoteBase(BaseModel):
@@ -17,8 +18,8 @@ class NoteUpdate(NoteBase):
 
 class NoteResponse(NoteBase):
     id: int
-    created_at: PastDatetime
-    last_update: PastDatetime
+    created_at: datetime
+    last_update: datetime
     profile_id: int
     class Config:
         from_attributes=True

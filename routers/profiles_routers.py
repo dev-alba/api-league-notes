@@ -27,6 +27,6 @@ def create_profile_router(nickname: str, tagline: str, current_user=Depends(get_
 def update_profile_router(nickname: str, tagline: str, data: ProfileUpdate, current_user=Depends(get_current_user), db=Depends(get_db)):
     return profiles_services.update_profile_service(db, current_user.id, nickname, tagline, data.new_nickname, data.new_tagline)
     
-@profile_router.delete('/', status_code=204)
-def delete_profile(data: ProfileDelete, current_user=Depends(get_current_user), db=Depends(get_db)):
-    return profiles_services.delete_profile_service(db, current_user.id, data.nickname, data.tagline, data.password)
+@profile_router.post('/{nickname}/{tagline}/delete-confirmation', status_code=204)
+def delete_profile(data: ProfileDelete, nickname: str, tagline: str, current_user=Depends(get_current_user), db=Depends(get_db)):
+    return profiles_services.delete_profile_service(db, current_user.id, nickname, tagline, data.password)

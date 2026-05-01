@@ -11,7 +11,19 @@ def get_notes_by_profile_service(db, user_id, nickname, tagline):
     if not notes:
         raise NotesNotFound
     return notes
-    
+
+def get_notes_by_matchup_service(db, user_id, nickname, tagline, player_champion, enemy_champion):
+    profile=profiles_repository.auth_profile_user_id_repo(db, user_id, nickname, tagline)
+    if not profile:
+        raise ProfileNotFound
+    matchup=matchups_service.get_matchup_by_names(db, player_champion, enemy_champion)
+    if not matchup:
+        raise MatchupNotFound
+    notes=notes_repository.get_notes_by_matchup_repo(db, profile, matchup)
+    if not notes:
+        raise NotesNotFound
+    return notes
+
 def create_note_service(db, user_id, nickname, tagline, player_champion_name, enemy_champion_name, content):
     profile=profiles_services.auth_profile_service(db, user_id, nickname, tagline)
     matchup=matchups_service.get_matchup_by_names(db, player_champion_name, enemy_champion_name)

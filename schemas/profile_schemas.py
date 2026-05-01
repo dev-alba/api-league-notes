@@ -14,7 +14,7 @@ class ProfileUpdate(BaseModel):
     new_nickname: str
     new_tagline: str
 
-class ProfileDelete(ProfileBase):
+class ProfileDelete(BaseModel):
     password: str
     class Config:
         from_attributes=True

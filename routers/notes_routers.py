@@ -15,11 +15,15 @@ def notes_root(current_user=Depends(get_current_user)):
 def get_notes_by_profile_router(nickname: str, tagline: str, current_user=Depends(get_current_user), db=Depends(get_db)):
     return notes_services.get_notes_by_profile_service(db, current_user.id, nickname, tagline)
 
-@note_router.post('/create', status_code=201, response_model=NoteResponse)
+@note_router.get('/get-by-matchup', status_code=200, response_model=List[NoteResponse])
+def get_notes_by_matchup(nickname: str, tagline: str, player_champion: str, enemy_champion: str, current_user=Depends(get_current_user), db=Depends(get_db)):
+    return notes_services.get_notes_by_matchup_service(db, current_user.id, nickname, tagline, player_champion, enemy_champion)
+
+@note_router.post('/', status_code=201, response_model=NoteResponse)
 def create_note_router(nickname: str, tagline: str, data: NoteCreate, current_user=Depends(get_current_user), db=Depends(get_db)):
     return notes_services.create_note_service(db, current_user.id, nickname, tagline, data.player_champion_name, data.enemy_champion_name, data.content)
     
-@note_router.patch('/update', status_code=200, response_model=NoteResponse)
+@note_router.patch('/update/{note_id}', status_code=200, response_model=NoteResponse)
 def update_note_router(nickname: str, tagline: str, note_id: int, data: NoteUpdate, current_user=Depends(get_current_user), db=Depends(get_db)):
     return notes_services.update_note_service(db, current_user.id, nickname, tagline, note_id, data.content)
     

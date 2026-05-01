@@ -2,11 +2,18 @@ from typing import List
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 from sqlalchemy import select
+from models.matchups_models import Matchup
 from models.profiles_models import Profile
 from models.notes_models import Note
 
 def get_notes_by_profile_repo(db: Session, profile: Profile) -> List[Note]:
     stmt=select(Note).where(Note.profile_id==profile.id)
+    return db.execute(stmt).scalars().all()
+
+def get_notes_by_matchup_repo(db: Session, profile: Profile, matchup: Matchup) -> List[Note]:
+    stmt=select(Note).where(
+        Note.profile_id == profile.id,
+        Note.matchup_id == matchup.id)
     return db.execute(stmt).scalars().all()
 
 def get_note_by_note_id(db: Session, note_id: int) -> Note:
