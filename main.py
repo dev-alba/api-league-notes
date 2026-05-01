@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 from core.exceptions import LeagueNotesException
 from routers import notes_routers, users_routers, profiles_routers, champions_routers, auth_routers, matchups_routers
-from core.database import Base, engine, SessionLocal
+from core.database import Base, engine, session_maker
 from models import champions_models, matchups_models, users_models, profiles_models, notes_models
 from sqlalchemy import select
 from scripts import import_champion
@@ -10,7 +10,9 @@ from contextlib import asynccontextmanager
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    db=SessionLocal()
+    Base.metadata.create_all(bind=engine)
+
+    db=session_maker()
     try:
         from models.champions_models import Champion
         stmt=select(Champion).limit(1)
@@ -20,8 +22,6 @@ async def lifespan(app: FastAPI):
     finally:
         db.close()
     yield
-
-Base.metadata.create_all(bind=engine)
 app=FastAPI(lifespan=lifespan)
 
 app.include_router(auth_routers.auth_router)
