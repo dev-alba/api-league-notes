@@ -3,13 +3,21 @@ from sqlalchemy import select, func
 from sqlalchemy.exc import IntegrityError
 from models.matchups_models import Matchup
 
+
 def get_matchup_repo(db: Session, matchup_id: int) -> Matchup:
-    stmt=select(Matchup).where(Matchup.id==matchup_id)
+    stmt = select(Matchup).where(Matchup.id == matchup_id)
     return db.execute(stmt).scalar_one_or_none()
 
-def get_matchup_by_champions_ids(db: Session, player_champion_id: int, enemy_champion_id: int) -> Matchup:
-    stmt=select(Matchup).where(Matchup.player_champion_id==player_champion_id, Matchup.enemy_champion_id==enemy_champion_id)
+
+def get_matchup_by_champions_ids(
+    db: Session, player_champion_id: int, enemy_champion_id: int
+) -> Matchup:
+    stmt = select(Matchup).where(
+        Matchup.player_champion_id == player_champion_id,
+        Matchup.enemy_champion_id == enemy_champion_id,
+    )
     return db.execute(stmt).scalar_one_or_none()
+
 
 def create_matchup_repo(db: Session, matchup: Matchup) -> Matchup:
     try:

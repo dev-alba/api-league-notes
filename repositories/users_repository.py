@@ -3,21 +3,26 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy import select, func, or_
 from models.users_models import User
 
+
 def get_user_by_user_id_repo(db: Session, user_id: int) -> User:
-    stmt=select(User).where(User.id==user_id)
+    stmt = select(User).where(User.id == user_id)
     return db.execute(stmt).scalar_one_or_none()
+
 
 def get_user_by_email_repo(db: Session, email: str) -> User:
-    stmt=select(User).where(
-        func.lower(User.email)==func.lower(email))
+    stmt = select(User).where(func.lower(User.email) == func.lower(email))
     return db.execute(stmt).scalar_one_or_none()
 
+
 def get_user_by_nick_or_email_repo(db: Session, identifier: str) -> User:
-    stmt=select(User).where(
-        or_(func.lower(User.email)==func.lower(identifier), 
-            func.lower(User.nickname)==func.lower(identifier))
+    stmt = select(User).where(
+        or_(
+            func.lower(User.email) == func.lower(identifier),
+            func.lower(User.nickname) == func.lower(identifier),
         )
+    )
     return db.execute(stmt).scalar_one_or_none()
+
 
 def create_user_repo(db: Session, user: User) -> User:
     try:
@@ -29,6 +34,7 @@ def create_user_repo(db: Session, user: User) -> User:
         db.rollback()
         raise
 
+
 def update_user_password_repo(db: Session, user: User) -> User:
     try:
         db.commit()
@@ -38,10 +44,11 @@ def update_user_password_repo(db: Session, user: User) -> User:
         db.rollback()
         raise
 
+
 def delete_user_repo(db: Session, user: User) -> bool:
     try:
-         db.delete(user)
-         db.commit()
+        db.delete(user)
+        db.commit()
     except IntegrityError:
         db.rollback()
         raise

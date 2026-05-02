@@ -6,19 +6,25 @@ from models.matchups_models import Matchup
 from models.profiles_models import Profile
 from models.notes_models import Note
 
+
 def get_notes_by_profile_repo(db: Session, profile: Profile) -> List[Note]:
-    stmt=select(Note).where(Note.profile_id==profile.id)
+    stmt = select(Note).where(Note.profile_id == profile.id)
     return db.execute(stmt).scalars().all()
 
-def get_notes_by_matchup_repo(db: Session, profile: Profile, matchup: Matchup) -> List[Note]:
-    stmt=select(Note).where(
-        Note.profile_id == profile.id,
-        Note.matchup_id == matchup.id)
+
+def get_notes_by_matchup_repo(
+    db: Session, profile: Profile, matchup: Matchup
+) -> List[Note]:
+    stmt = select(Note).where(
+        Note.profile_id == profile.id, Note.matchup_id == matchup.id
+    )
     return db.execute(stmt).scalars().all()
+
 
 def get_note_by_note_id(db: Session, note_id: int) -> Note:
-    stmt=select(Note).where(Note.id==note_id)
+    stmt = select(Note).where(Note.id == note_id)
     return db.execute(stmt).scalar_one_or_none()
+
 
 def create_note_repo(db: Session, note: Note) -> Note:
     try:
@@ -30,15 +36,17 @@ def create_note_repo(db: Session, note: Note) -> Note:
         db.rollback()
         raise
 
+
 def update_note_repo(db: Session, note: Note, new_content: str) -> Note:
     try:
-        note.content=new_content
+        note.content = new_content
         db.commit()
         db.refresh(note)
     except IntegrityError:
         db.rollback()
         raise
     return note
+
 
 def delete_note_repo(db: Session, note: Note) -> bool:
     db.delete(note)
