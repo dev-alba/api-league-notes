@@ -1,18 +1,13 @@
 from sqlalchemy.orm import DeclarativeBase, sessionmaker
 from sqlalchemy import create_engine
-from dotenv import load_dotenv
-
-import os
+from core.config import settings
 
 
 class Base(DeclarativeBase):
     pass
 
 
-load_dotenv(override=True)
-engine = create_engine(
-    f'postgresql://{os.getenv("DB_USER")}:{os.getenv("DB_PASSWORD")}@{os.getenv("DB_HOST")}:{os.getenv("DB_PORT", "5432")}/{os.getenv("DB_NAME")}'
-)
+engine = create_engine(settings.DATABASE_URL)
 session_maker = sessionmaker(engine)
 
 

@@ -54,7 +54,9 @@ precisará instalar as dependências do **_Poetry_**:
    DB_USER=seu_usuario_aqui   # seu usuário do banco
    DB_PASSWORD=sua_senha_aqui   # sua senha para o usuário do banco
    DB_PORT=5432
-   
+   DATABASE_URL=sua_url_do_banco_aqui   # preenche caso possua alguma URL externa do postgres, 
+                                        # caso não, deixe em branco 
+  
    ACCESS_TOKEN_EXPIRE_MINUTES=60   # o tempo, em minutos, que seu token deve ser válido
    SECRET_KEY=sua_senha_secreta_aqui   # insira a sua chave secreta para o jwt
    ALGORITHM=HS256
@@ -76,7 +78,7 @@ Com isso, o seu LeagueNotes já deve rodar normalmente.
 
 Basta acessar a documentação do **_Swagger_** (localhost:8000/docs).
 
-Vale lembrar que será necessário fazer login para se autenticar e poder acessar todas as rotas.
+> Vale lembrar que será necessário fazer login para se autenticar e poder acessar todas as rotas.
 As únicas rotas públicas da API serão o cadastro de usuários e login.
 ---
 ## 🧪 Testes automatizados
@@ -88,7 +90,7 @@ já tenha sido feito, basta rodar o comando no terminal:
    poetry run pytest 
    ```
 
-Dessa forma, todos testes do diretório **_tests_** serão executados para confirmar se
+- Dessa forma, todos testes do diretório **_tests_** serão executados para confirmar se
 obtiveram sucesso.
 ---
 ## ✨ Padronização de código
