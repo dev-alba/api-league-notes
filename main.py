@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from core.exceptions import LeagueNotesException
 from routers import (
@@ -41,6 +42,13 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan=lifespan)
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # em produção troca pelo domínio do Firebase Hosting
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 app.include_router(auth_routers.auth_router)
 app.include_router(notes_routers.note_router)
 app.include_router(users_routers.user_router)
